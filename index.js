@@ -40,7 +40,6 @@
 // WHEN I choose to update an employee role
 // THEN I am   prompted to select an employee to update and their new role and this information is updated in the database 
 const { default: inquirer } = require("inquirer");
-const fs = require('fs');
 const mysql = require('mysql2');
 const PORT = process.env.PORT || 3001;
 
@@ -64,10 +63,12 @@ const db = mysql.createConnection(
   console.log(`Connected to the classlist_db database.`)
 );
 
-
+// delcaring globally scoped variables for db.queries
 const roles = db.query `SELECT role_id, role_title, role_salary FROM roles;`
 const employees = db.query `SELECT employee_id, first_name, last_name, role_id, department_id, salaries, managers FROM employee`
 const departments = db.query`SELECT department_name, department_id FROM department`
+
+
 
 function loadMainQuestions() {
   inquirer.prompt[{
@@ -135,7 +136,7 @@ async function addRole() {
     choices: departments
   },
 ]);
-    const newRole = await db.query(`INSERT INTO roles (title) VALUES (${answer.newRole} ${answer.salary} ${answer.departments})`)
+    const newRole = await db.query(`INSERT INTO roles (title) VALUES (${answer.newRole} ${answer.salary} ${answer.department})`)
     console.table(newRole); 
     loadMainQuestions();
   };
@@ -196,7 +197,7 @@ const answer = inquirer.prompt(
   choices: roles,
 })  
 let updateSQL = `UPDATE employee SET role_id = ${answer.role} WHERE id = ${anwer.employee.id}`
-console.table(UpdateSQL, updateEmployee, finalRoles)
+console.table(updateSQL, updateEmployee, finalRoles)
 loadMainQuestions();
 };
 
