@@ -100,14 +100,14 @@ async function addDepartment() {
   const newDept = await db.query(`INSERT INTO departments (name) VALUES ("${answer.newDepartment}")`)
   console.log(`Successfully added the ${answer.newDepartment} into departments`);
   loadMainQuestions();
-};
+};  
 
 async function addRole() {
-  const roleResult = await db.query(`SELECT * FROM role`)
-  let finalRoles = roleResult.map(({ id, title }) => ({
-    value: id,
-    name: `${title}`,
-  }));
+    const roleResult = await db.query(`SELECT * FROM role`)
+    let finalRoles = roleResult.map(({ id, title }) => ({
+      value: id,
+      name: `${title}`,
+    }));
 
   const answer = await inquirer.prompt([
     {
@@ -205,7 +205,7 @@ async function updateEmployee() {
     WHERE id = "${answers.employee_id}"`
 
     await db.query(updateSQL)
-    console.log('Employee role is successfully updated....')
+    console.log('Employee role is successfully updated!')
     loadMainQuestions()
   } catch (error) {
     console.log(error)
